@@ -25,6 +25,14 @@ RUN apk --update --no-cache add \
 	      php5-zip \
 	      php5-zlib \
     && rm -rf /var/cache/apk/*
+    
+ENV PHP_INI_DIR /usr/local/etc/php
+RUN mkdir -p $PHP_INI_DIR/conf.d
+
+WORKDIR /var/www/html
+
+ADD shadow/passwd /etc/passwd
+ADD shadow/group /etc/group
 
 COPY php.ini /etc/php5/conf.d/50-setting.ini
 COPY php-fpm.conf /etc/php5/php-fpm.conf
