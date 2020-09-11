@@ -82,8 +82,8 @@ RUN set -xe \
 		libressl-dev \
 		libsodium-dev \
 		libxml2-dev \
-		sqlite-dev \
-	\
+		sqlite-dev
+# 	\
 # 	&& cd /usr/src/php \
 # 	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
 # 	&& ./configure \
@@ -112,36 +112,36 @@ RUN set -xe \
 # 		--with-libedit \
 # 		--with-openssl \
 # 		--with-zlib \
-		\
+# 		\
 # bundled pcre does not support JIT on s390x
 # https://manpages.debian.org/stretch/libpcre3-dev/pcrejit.3.en.html#AVAILABILITY_OF_JIT_SUPPORT
-		$(test "$gnuArch" = 's390x-linux-gnu' && echo '--without-pcre-jit') \
-		\
-		$PHP_EXTRA_CONFIGURE_ARGS \
+# 		$(test "$gnuArch" = 's390x-linux-gnu' && echo '--without-pcre-jit') \
+# 		\
+# 		$PHP_EXTRA_CONFIGURE_ARGS \
 # 	&& make -j "$(nproc)" \
 # 	&& make install \
 # 	&& { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
 # 	&& make clean \
 # 	\
 # https://github.com/docker-library/php/issues/692 (copy default example "php.ini" files somewhere easily discoverable)
-	&& cp -v php.ini-* "$PHP_INI_DIR/" \
-	\
-	&& cd / \
-	&& docker-php-source delete \
-	\
-	&& runDeps="$( \
-		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-			| tr ',' '\n' \
-			| sort -u \
-			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-	)" \
-	&& apk add --no-cache --virtual .php-rundeps $runDeps \
-	\
-	&& apk del .build-deps \
-	\
-# https://github.com/docker-library/php/issues/443
-	&& pecl update-channels \
-	&& rm -rf /tmp/pear ~/.pearrc
+# 	&& cp -v php.ini-* "$PHP_INI_DIR/" \
+# 	\
+# 	&& cd / \
+# 	&& docker-php-source delete \
+# 	\
+# 	&& runDeps="$( \
+# 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
+# 			| tr ',' '\n' \
+# 			| sort -u \
+# 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+# 	)" \
+# 	&& apk add --no-cache --virtual .php-rundeps $runDeps \
+# 	\
+# 	&& apk del .build-deps \
+# 	\
+# # https://github.com/docker-library/php/issues/443
+# 	&& pecl update-channels \
+# 	&& rm -rf /tmp/pear ~/.pearrc
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
 
