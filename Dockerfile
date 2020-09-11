@@ -84,34 +84,34 @@ RUN set -xe \
 		libxml2-dev \
 		sqlite-dev \
 	\
-	&& cd /usr/src/php \
-	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-	&& ./configure \
-		--build="$gnuArch" \
-		--with-config-file-path="$PHP_INI_DIR" \
-		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
-		\
-# make sure invalid --configure-flags are fatal errors intead of just warnings
-		--enable-option-checking=fatal \
-		\
-# https://github.com/docker-library/php/issues/439
-		--with-mhash \
-		\
-# --enable-ftp is included here because ftp_ssl_connect() needs ftp to be compiled statically (see https://github.com/docker-library/php/issues/236)
-		--enable-ftp \
-# --enable-mbstring is included here because otherwise there's no way to get pecl to use it properly (see https://github.com/docker-library/php/issues/195)
-		--enable-mbstring \
-# --enable-mysqlnd is included here because it's harder to compile after the fact than extensions are (since it's a plugin for several extensions, not an extension in itself)
-		--enable-mysqlnd \
-# https://wiki.php.net/rfc/argon2_password_hash (7.2+)
-		--with-password-argon2 \
-# https://wiki.php.net/rfc/libsodium
-		--with-sodium=shared \
-		\
-		--with-curl \
-		--with-libedit \
-		--with-openssl \
-		--with-zlib \
+# 	&& cd /usr/src/php \
+# 	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
+# 	&& ./configure \
+# 		--build="$gnuArch" \
+# 		--with-config-file-path="$PHP_INI_DIR" \
+# 		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
+# 		\
+# # make sure invalid --configure-flags are fatal errors intead of just warnings
+# 		--enable-option-checking=fatal \
+# 		\
+# # https://github.com/docker-library/php/issues/439
+# 		--with-mhash \
+# 		\
+# # --enable-ftp is included here because ftp_ssl_connect() needs ftp to be compiled statically (see https://github.com/docker-library/php/issues/236)
+# 		--enable-ftp \
+# # --enable-mbstring is included here because otherwise there's no way to get pecl to use it properly (see https://github.com/docker-library/php/issues/195)
+# 		--enable-mbstring \
+# # --enable-mysqlnd is included here because it's harder to compile after the fact than extensions are (since it's a plugin for several extensions, not an extension in itself)
+# 		--enable-mysqlnd \
+# # https://wiki.php.net/rfc/argon2_password_hash (7.2+)
+# 		--with-password-argon2 \
+# # https://wiki.php.net/rfc/libsodium
+# 		--with-sodium=shared \
+# 		\
+# 		--with-curl \
+# 		--with-libedit \
+# 		--with-openssl \
+# 		--with-zlib \
 		\
 # bundled pcre does not support JIT on s390x
 # https://manpages.debian.org/stretch/libpcre3-dev/pcrejit.3.en.html#AVAILABILITY_OF_JIT_SUPPORT
